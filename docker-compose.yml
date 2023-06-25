@@ -8,6 +8,6 @@ services:
     devices:
       - "${USB_DEVICE}"
     ports:
-      - "2638:2638"
+      - 3000:3000
     volumes:
       - .:/usr/src/app
