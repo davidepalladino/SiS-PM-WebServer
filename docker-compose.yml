@@ -2,11 +2,9 @@ version: "3.5"
 services:
   app:
     container_name: sis-pm-webserver
-    environment:
-      - USB_DEVICE=/dev/bus/usb/001/001
     build: .
     devices:
-      - "${USB_DEVICE}"
+      - /dev/bus/usb/001/008
     ports:
       - "3000:3000"
     volumes:
