@@ -1,6 +1,7 @@
 version: "3.5"
 services:
   app:
+    container_name: sis-pm-webserver
     environment:
       - USB_DEVICE="/dev/bus/usb/001/001"
     build: .
