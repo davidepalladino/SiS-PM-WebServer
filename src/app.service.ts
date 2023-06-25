@@ -14,12 +14,12 @@ export class AppService {
   constructor(private configService: ConfigService) {}
 
   getStatus(): Observable<IExec> {
-    return this.executeCommand('-g');
+    return this.executeCommand('-g all');
   }
 
   private executeCommand(arg: string) {
     return fromPromise(
-      this.execute(`${this.command} "${arg}"`).then(({ stdout, stderr }) => {
+      this.execute(`${this.command} ${arg}`).then(({ stdout, stderr }) => {
         return { stdout, stderr } as IExec;
       }),
     );
