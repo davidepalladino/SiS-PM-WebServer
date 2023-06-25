@@ -1,0 +1,12 @@
+version: "3.5"
+services:
+  app:
+    environment:
+      - USB_DEVICE="/dev/bus/usb/001/001"
+    build: .
+    devices:
+      - "${USB_DEVICE}"
+    ports:
+      - "2638:2638"
+    volumes:
+      - .:/usr/src/app
