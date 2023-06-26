@@ -19,3 +19,7 @@ export interface ISchedule {
   moments: IMoment[];
   loopDays?: number;
 }
+
+export interface IStatus {
+  status: string;
+}

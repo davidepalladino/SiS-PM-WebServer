@@ -1,5 +1,6 @@
 import { Body, Controller, Get, Param, Patch } from "@nestjs/common";
 import { AppService } from "./app.service";
+import { IStatus } from "./app.entities";
 
 @Controller()
 export class AppController {
@@ -16,8 +17,8 @@ export class AppController {
   }
 
   @Patch("/status/:id")
-  setStatus(@Param("id") socketId: number, @Body() status: boolean) {
-    return this.appService.setStatus(socketId, status);
+  setStatus(@Param("id") socketId: number, @Body() body: IStatus) {
+    return this.appService.setStatus(socketId, body.status);
   }
 
   @Get("/schedule/:id")
