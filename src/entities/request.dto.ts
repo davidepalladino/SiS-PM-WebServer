@@ -8,7 +8,7 @@ export class StatusRequestDTO {
 
 export class ScheduleRequestDTO {
   @IsArray()
-  moments: IMomentRequest[];
+  moments?: IMomentRequest[];
 
   @IsNumber()
   @IsPositive()
