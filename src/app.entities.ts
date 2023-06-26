@@ -15,6 +15,7 @@ export interface IMoment {
 
 export interface ISchedule {
   socket: number;
+  modifiedAt: Date;
   moments: IMoment[];
-  loop?: number;
+  loopDays?: number;
 }
