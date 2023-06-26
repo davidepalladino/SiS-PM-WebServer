@@ -14,13 +14,10 @@ export class AppAdapter {
   }
 
   adaptStatus(response: string): ISocket {
-    return response.match(/(on|off)/).map(
-      (result) =>
-        ({
-          socket: Number(response.match(/(outlet \d)/g)[0].split(" ")[1]),
-          status: result === "on"
-        } as ISocket)
-    )[0];
+    return {
+      socket: Number(response.match(/(outlet \d)/g)[0].split(" ")[1]),
+      status: response.match(/(on|off)/g)[0] === "on"
+    } as ISocket;
   }
 
   adaptGetSchedule(response: string): ISchedule {
