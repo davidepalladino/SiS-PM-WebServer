@@ -2,7 +2,7 @@ import { Controller, Get, Param } from "@nestjs/common";
 import { AppService } from "./app.service";
 import { AppAdapter } from "./app.adapter";
 import { IExecResult } from "./app.entities";
-import { map, tap } from "rxjs";
+import { finalize, map, tap } from "rxjs";
 
 @Controller()
 export class AppController {
@@ -25,6 +25,7 @@ export class AppController {
   getSchedule(@Param("id") socketId: number) {
     return this.appService.getSchedule(socketId).pipe(
       tap(console.log),
+      finalize(console.log),
       map((response: IExecResult) =>
         this.appAdapter.adaptGetSchedule(response.stdout)
       )
