@@ -72,7 +72,9 @@ export class AppAdapter {
           args += `----Aafter ${moment.minutes}`;
         }
 
-        args += `--Ado ${moment.status ? "on" : "off"} `;
+        if (moment.datetime || moment.minutes) {
+          args += `--Ado ${moment.status ? "on" : "off"} `;
+        }
       });
     }
 
