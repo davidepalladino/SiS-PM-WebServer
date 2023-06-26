@@ -17,6 +17,10 @@ export class AppService {
     return this.executeCommand('-g all');
   }
 
+  getSchedule(socketId: string): Observable<IExecResult> {
+    return this.executeCommand(`-a${socketId}`);
+  }
+
   private executeCommand(arg: string) {
     return fromPromise(
       this.execute(`${this.command} ${arg}`).then(({ stdout, stderr }) => {
