@@ -61,12 +61,24 @@ export class AppAdapter {
   adaptSetSchedule(schedule: ScheduleRequestDTO) {
     let args = "";
 
-    schedule.moments.forEach((moment) => {
-      if (moment.type === ETypeMoment.DATETIME) {
-        // TODO: Continue from here
-        args += "--Aat ";
-      }
-    });
+    if (schedule.moments && schedule.moments.length) {
+      schedule.moments.forEach((moment) => {
+        if (moment.type === ETypeMoment.DATETIME && moment.datetime) {
+          args += `--Aat ${moment.datetime
+            .toString()
+            .replace("T", " ")
+            .substring(0, 16)} `;
+        } else if (moment.type === ETypeMoment.MINUTES && moment.minutes) {
+          args += `----Aafter ${moment.minutes}`;
+        }
+
+        args += `--Ado ${moment.status ? "on" : "off"} `;
+      });
+    }
+
+    if (schedule.loopMinutes) {
+      args += `--Aloop ${schedule.loopMinutes}`;
+    }
 
     return args;
   }

@@ -1,6 +1,6 @@
 export enum ETypeMoment {
-  DATETIME,
-  MINUTES
+  DATETIME = "DATETIME",
+  MINUTES = "MINUTES"
 }
 
 export interface IExecResult {
