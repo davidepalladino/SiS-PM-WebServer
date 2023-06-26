@@ -13,7 +13,17 @@ export class AppAdapter {
     );
   }
 
-  adaptGetSchedule(response: string) {
+  adaptStatus(response: string): ISocket {
+    return response.match(/(on|off)/).map(
+      (result, index) =>
+        ({
+          socket: index + 1,
+          status: result === "on"
+        } as ISocket)
+    )[0];
+  }
+
+  adaptGetSchedule(response: string): ISchedule {
     const splitResponse = response.split("\n");
     let [, , socket, modifiedAt, ...rest] = splitResponse;
 
