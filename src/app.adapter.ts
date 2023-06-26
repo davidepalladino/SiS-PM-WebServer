@@ -1,36 +1,39 @@
 import { Injectable } from "@nestjs/common";
-import { IMoment, ISchedule, ISocket } from "./app.entities";
+import {
+  ScheduleResponseDTO,
+  StatusResponseDTO
+} from "./entities/response.dto";
+import { ETypeMoment, IMomentResponse } from "./entities/entities";
+import { ScheduleRequestDTO } from "./entities/request.dto";
 
 @Injectable()
 export class AppAdapter {
-  adaptStatuses(response: string): ISocket[] {
+  adaptStatuses(response: string): StatusResponseDTO[] {
     return response.match(/(on|off)/g).map(
       (result, index) =>
         ({
           socket: index + 1,
           status: result === "on"
-        } as ISocket)
+        } as StatusResponseDTO)
     );
   }
 
-  adaptGetStatus(response: string): ISocket {
+  adaptGetStatus(response: string): StatusResponseDTO {
     return {
       socket: Number(response.match(/(outlet \d)/g)[0].split(" ")[1]),
       status: response.match(/(on|off)/g)[0] === "on"
-    } as ISocket;
+    } as StatusResponseDTO;
   }
 
-  adaptSetStatus(status: string): string {
-    return status.toLowerCase() === "true" || status.toLowerCase() === "1"
-      ? "o"
-      : "f";
+  adaptSetStatus(status: boolean): string {
+    return status ? "o" : "f";
   }
 
-  adaptGetSchedule(response: string): ISchedule {
+  adaptGetSchedule(response: string): ScheduleResponseDTO {
     const splitResponse = response.split("\n");
     let [, , socket, modifiedAt, ...rest] = splitResponse;
 
-    const moments: IMoment[] = [];
+    const moments: IMomentResponse[] = [];
     let loopDays: number = undefined;
 
     socket = socket.match(/\d/)[0];
@@ -51,7 +54,20 @@ export class AppAdapter {
       socket: Number(socket),
       modifiedAt: new Date(modifiedAt),
       moments,
-      loopDays
-    } as ISchedule;
+      loopMinutes: loopDays
+    } as ScheduleResponseDTO;
+  }
+
+  adaptSetSchedule(schedule: ScheduleRequestDTO) {
+    let args = "";
+
+    schedule.moments.forEach((moment) => {
+      if (moment.type === ETypeMoment.DATETIME) {
+        // TODO: Continue from here
+        args += "--Aat ";
+      }
+    });
+
+    return args;
   }
 }

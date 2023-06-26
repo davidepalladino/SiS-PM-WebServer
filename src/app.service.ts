@@ -3,21 +3,21 @@ import { exec } from "child_process";
 import { promisify } from "util";
 import { map, Observable, tap } from "rxjs";
 import { fromPromise } from "rxjs/internal/observable/innerFrom";
-import { ConfigService } from "@nestjs/config";
-import { IExecResult, ISchedule, ISocket } from "./app.entities";
 import { AppAdapter } from "./app.adapter";
+import {
+  ScheduleResponseDTO,
+  StatusResponseDTO
+} from "./entities/response.dto";
+import { IExecResult } from "./entities/entities";
+import { ScheduleRequestDTO } from "./entities/request.dto";
 
 @Injectable()
 export class AppService {
-  private command = this.configService.get<string>("CMD");
   private execute = promisify(exec);
 
-  constructor(
-    private configService: ConfigService,
-    private readonly appAdapter: AppAdapter
-  ) {}
+  constructor(private readonly appAdapter: AppAdapter) {}
 
-  getStatuses(): Observable<ISocket[]> {
+  getStatuses(): Observable<StatusResponseDTO[]> {
     return this.executeCommand("-g all").pipe(
       tap(console.log),
       map((response: IExecResult) =>
@@ -26,7 +26,7 @@ export class AppService {
     );
   }
 
-  getStatus(socketId: number): Observable<ISocket> {
+  getStatus(socketId: number): Observable<StatusResponseDTO> {
     return this.executeCommand(`-g${socketId}`).pipe(
       tap(console.log),
       map((response: IExecResult) =>
@@ -35,7 +35,7 @@ export class AppService {
     );
   }
 
-  setStatus(socketId: number, status: string): Observable<ISocket> {
+  setStatus(socketId: number, status: boolean): Observable<StatusResponseDTO> {
     return this.executeCommand(
       `-${this.appAdapter.adaptSetStatus(status)}${socketId}`
     ).pipe(
@@ -46,7 +46,7 @@ export class AppService {
     );
   }
 
-  getSchedule(socketId: number): Observable<ISchedule> {
+  getSchedule(socketId: number): Observable<ScheduleResponseDTO> {
     return this.executeCommand(`-a${socketId}`).pipe(
       tap(console.log),
       map((response: IExecResult) =>
@@ -55,9 +55,27 @@ export class AppService {
     );
   }
 
+  setSchedule(
+    socketId: number,
+    schedule: ScheduleRequestDTO
+  ): Observable<ScheduleResponseDTO> {
+    return this.executeCommand(
+      `-A${socketId} ${this.appAdapter.adaptSetSchedule(schedule)}`
+    ).pipe(
+      tap(console.log),
+      map((response: IExecResult) =>
+        this.appAdapter.adaptGetSchedule(response.stdout)
+      )
+    );
+  }
+
   private executeCommand(arg: string) {
+    const command = `sispmctl ${arg}`;
+
+    console.log(command);
+
     return fromPromise(
-      this.execute(`${this.command} ${arg}`).then(({ stdout, stderr }) => {
+      this.execute(command).then(({ stdout, stderr }) => {
         return { stdout, stderr } as IExecResult;
       })
     );
