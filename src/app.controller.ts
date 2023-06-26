@@ -1,43 +1,27 @@
-import { Controller, Get, Param } from "@nestjs/common";
+import { Body, Controller, Get, Param, Patch } from "@nestjs/common";
 import { AppService } from "./app.service";
-import { AppAdapter } from "./app.adapter";
-import { IExecResult } from "./app.entities";
-import { map, tap } from "rxjs";
 
 @Controller()
 export class AppController {
-  constructor(
-    private readonly appService: AppService,
-    private readonly appAdapter: AppAdapter
-  ) {}
+  constructor(private readonly appService: AppService) {}
 
   @Get("/statuses")
   getStatuses() {
-    return this.appService.getStatuses().pipe(
-      tap(console.log),
-      map((response: IExecResult) =>
-        this.appAdapter.adaptStatuses(response.stdout)
-      )
-    );
+    return this.appService.getStatuses();
   }
 
   @Get("/status/:id")
   getStatus(@Param("id") socketId: number) {
-    return this.appService.getStatus(socketId).pipe(
-      tap(console.log),
-      map((response: IExecResult) =>
-        this.appAdapter.adaptStatus(response.stdout)
-      )
-    );
+    return this.appService.getStatus(socketId);
+  }
+
+  @Patch("/status/:id")
+  setStatus(@Param("id") socketId: number, @Body() status: boolean) {
+    return this.appService.setStatus(socketId, status);
   }
 
   @Get("/schedule/:id")
   getSchedule(@Param("id") socketId: number) {
-    return this.appService.getSchedule(socketId).pipe(
-      tap(console.log),
-      map((response: IExecResult) =>
-        this.appAdapter.adaptGetSchedule(response.stdout)
-      )
-    );
+    return this.appService.getSchedule(socketId);
   }
 }
