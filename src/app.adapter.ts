@@ -13,11 +13,15 @@ export class AppAdapter {
     );
   }
 
-  adaptStatus(response: string): ISocket {
+  adaptGetStatus(response: string): ISocket {
     return {
       socket: Number(response.match(/(outlet \d)/g)[0].split(" ")[1]),
       status: response.match(/(on|off)/g)[0] === "on"
     } as ISocket;
+  }
+
+  adaptSetStatus(request: boolean): string {
+    return request ? "o" : "f";
   }
 
   adaptGetSchedule(response: string): ISchedule {
