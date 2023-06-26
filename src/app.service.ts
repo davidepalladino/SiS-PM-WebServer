@@ -28,7 +28,6 @@ export class AppService {
       })
     ).pipe(
       catchError((err, caught) => {
-        console.log(err);
         throw caught;
       })
     );
