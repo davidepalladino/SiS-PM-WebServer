@@ -14,11 +14,10 @@ export class AppAdapter {
   }
 
   adaptStatus(response: string): ISocket {
-    console.log(response.match(/(outlet \d)/g));
     return response.match(/(on|off)/).map(
-      (result, index) =>
+      (result) =>
         ({
-          socket: index + 1,
+          socket: Number(response.match(/(outlet \d)/g)[0].split(" ")[1]),
           status: result === "on"
         } as ISocket)
     )[0];
