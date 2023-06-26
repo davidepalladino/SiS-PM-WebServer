@@ -20,8 +20,10 @@ export class AppAdapter {
     } as ISocket;
   }
 
-  adaptSetStatus(request: boolean): string {
-    return request ? "o" : "f";
+  adaptSetStatus(status: string): string {
+    return status.toLowerCase() === "true" || status.toLowerCase() === "1"
+      ? "o"
+      : "f";
   }
 
   adaptGetSchedule(response: string): ISchedule {

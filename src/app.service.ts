@@ -35,10 +35,15 @@ export class AppService {
     );
   }
 
-  setStatus(socketId: number, status: boolean): Observable<ISocket> {
+  setStatus(socketId: number, status: string): Observable<ISocket> {
     return this.executeCommand(
       `-${this.appAdapter.adaptSetStatus(status)}${socketId}`
-    ).pipe(tap(console.log));
+    ).pipe(
+      tap(console.log),
+      map((response: IExecResult) =>
+        this.appAdapter.adaptGetStatus(response.stdout)
+      )
+    );
   }
 
   getSchedule(socketId: number): Observable<ISchedule> {
