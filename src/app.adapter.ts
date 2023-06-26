@@ -14,7 +14,7 @@ export class AppAdapter {
   }
 
   adaptStatus(response: string): ISocket {
-    console.log(response);
+    console.log(response.match(/(outlet \d)/));
     return response.match(/(on|off)/).map(
       (result, index) =>
         ({
