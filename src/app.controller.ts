@@ -1,6 +1,15 @@
-import { Body, Controller, Get, Param, Patch } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Get,
+  Header,
+  Param,
+  Patch,
+  Put,
+  ValidationPipe
+} from "@nestjs/common";
 import { AppService } from "./app.service";
-import { IStatus } from "./app.entities";
+import { ScheduleRequestDTO, StatusRequestDTO } from "./entities/request.dto";
 
 @Controller("/api")
 export class AppController {
@@ -17,12 +26,22 @@ export class AppController {
   }
 
   @Patch("/status/:id")
-  setStatus(@Param("id") socketId: number, @Body() body: IStatus) {
+  @Header("Content-Type", "application/json")
+  setStatus(@Param("id") socketId: number, @Body() body: StatusRequestDTO) {
     return this.appService.setStatus(socketId, body.status);
   }
 
   @Get("/schedule/:id")
   getSchedule(@Param("id") socketId: number) {
     return this.appService.getSchedule(socketId);
+  }
+
+  @Put("/schedule/:id")
+  @Header("Content-Type", "application/json")
+  setSchedule(
+    @Param("id") socketId: number,
+    @Body(new ValidationPipe({ transform: true })) body: ScheduleRequestDTO
+  ) {
+    return this.appService.setSchedule(socketId, body);
   }
 }
