@@ -1,3 +1,11 @@
+import {
+  IsDate,
+  IsEnum,
+  IsNumber,
+  IsOptional,
+  IsPositive
+} from "class-validator";
+
 export enum ETypeMoment {
   DATETIME = "DATETIME",
   MINUTES = "MINUTES"
@@ -8,10 +16,19 @@ export interface IExecResult {
   stderr: string;
 }
 
-export interface IMomentRequest {
+export class IMomentRequest {
+  @IsEnum(ETypeMoment)
   type: ETypeMoment;
+
+  @IsOptional()
+  @IsDate()
   datetime?: Date;
+
+  @IsOptional()
+  @IsNumber()
+  @IsPositive()
   minutes?: number;
+
   status: boolean;
 }
 
