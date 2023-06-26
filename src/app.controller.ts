@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from "@nestjs/common";
 import { AppService } from './app.service';
 import { AppAdapter } from './app.adapter';
 import { IExecResult } from './app.entities';
@@ -13,6 +13,12 @@ export class AppController {
 
   @Get('/statuses')
   getStatuses() {
+    return this.appService
+      .getStatuses();
+  }
+
+  @Get('/schedule:id')
+  getSchedule(@Param('id') socketId: string) {
     return this.appService
       .getStatuses()
       .pipe(
