@@ -17,7 +17,7 @@ export class AppController {
       .getStatuses();
   }
 
-  @Get('/schedule:id')
+  @Get('/schedule/:id')
   getSchedule(@Param('id') socketId: string) {
     return this.appService
       .getStatuses()
