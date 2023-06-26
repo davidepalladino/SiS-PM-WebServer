@@ -64,10 +64,10 @@ export class AppAdapter {
     if (schedule.moments && schedule.moments.length) {
       schedule.moments.forEach((moment) => {
         if (moment.type === ETypeMoment.DATETIME && moment.datetime) {
-          args += `--Aat ${moment.datetime
+          args += `--Aat "${moment.datetime
             .toString()
             .replace("T", " ")
-            .substring(0, 16)} `;
+            .substring(0, 16)}" `;
         } else if (moment.type === ETypeMoment.MINUTES && moment.minutes) {
           args += `----Aafter ${moment.minutes}`;
         }
