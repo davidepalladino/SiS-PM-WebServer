@@ -2,7 +2,7 @@ import { Body, Controller, Get, Param, Patch } from "@nestjs/common";
 import { AppService } from "./app.service";
 import { IStatus } from "./app.entities";
 
-@Controller()
+@Controller("/api")
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
