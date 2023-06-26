@@ -21,6 +21,16 @@ export class AppController {
     );
   }
 
+  @Get("/status/:id")
+  getStatus(@Param("id") socketId: number) {
+    return this.appService.getStatus(socketId).pipe(
+      tap(console.log),
+      map((response: IExecResult) =>
+        this.appAdapter.adaptStatus(response.stdout)
+      )
+    );
+  }
+
   @Get("/schedule/:id")
   getSchedule(@Param("id") socketId: number) {
     return this.appService.getSchedule(socketId).pipe(

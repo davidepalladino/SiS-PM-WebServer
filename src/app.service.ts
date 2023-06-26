@@ -17,6 +17,10 @@ export class AppService {
     return this.executeCommand("-g all");
   }
 
+  getStatus(socketId: number): Observable<IExecResult> {
+    return this.executeCommand(`-g${socketId}`);
+  }
+
   getSchedule(socketId: number): Observable<IExecResult> {
     return this.executeCommand(`-a${socketId}`);
   }
