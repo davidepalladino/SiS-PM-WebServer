@@ -22,7 +22,7 @@ export class AppController {
   }
 
   @Get("/schedule/:id")
-  getSchedule(@Param("id") socketId: string) {
+  getSchedule(@Param("id") socketId: number) {
     return this.appService.getSchedule(socketId).pipe(
       tap(console.log),
       map((response: IExecResult) =>

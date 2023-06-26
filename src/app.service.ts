@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { exec } from "child_process";
 import { promisify } from "util";
-import { Observable } from "rxjs";
+import { catchError, Observable } from "rxjs";
 import { fromPromise } from "rxjs/internal/observable/innerFrom";
 import { ConfigService } from "@nestjs/config";
 import { IExecResult } from "./app.entities";
@@ -17,7 +17,7 @@ export class AppService {
     return this.executeCommand("-g all");
   }
 
-  getSchedule(socketId: string): Observable<IExecResult> {
+  getSchedule(socketId: number): Observable<IExecResult> {
     return this.executeCommand(`-a${socketId}`);
   }
 
@@ -25,6 +25,11 @@ export class AppService {
     return fromPromise(
       this.execute(`${this.command} ${arg}`).then(({ stdout, stderr }) => {
         return { stdout, stderr } as IExecResult;
+      })
+    ).pipe(
+      catchError((err, caught) => {
+        console.log(err);
+        throw caught;
       })
     );
   }
