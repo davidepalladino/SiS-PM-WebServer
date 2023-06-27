@@ -35,7 +35,7 @@ export class AppService {
     );
   }
 
-  setStatus(socketId: number, status: boolean): Observable<StatusResponseDTO> {
+  setStatus(socketId: number, status?: boolean): Observable<StatusResponseDTO> {
     return this.executeCommand(
       `-${this.appAdapter.adaptSetStatus(status)}${socketId}`
     ).pipe(

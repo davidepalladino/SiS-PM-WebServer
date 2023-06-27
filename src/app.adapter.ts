@@ -25,8 +25,12 @@ export class AppAdapter {
     } as StatusResponseDTO;
   }
 
-  adaptSetStatus(status: boolean): string {
-    return status ? "o" : "f";
+  adaptSetStatus(status?: boolean): string {
+    if (status !== undefined) {
+      return status ? "o" : "f";
+    }
+
+    return "t";
   }
 
   adaptGetSchedule(response: string): ScheduleResponseDTO {

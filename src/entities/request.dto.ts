@@ -8,8 +8,9 @@ import {
 import { IMomentRequest } from "./entities";
 
 export class StatusRequestDTO {
+  @IsOptional()
   @IsBoolean()
-  status: boolean;
+  status?: boolean;
 }
 
 export class ScheduleRequestDTO {
