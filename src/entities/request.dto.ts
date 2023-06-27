@@ -1,11 +1,13 @@
 import {
   IsArray,
   IsBoolean,
+  IsDate,
+  IsEnum,
   IsNumber,
   IsOptional,
   IsPositive
 } from "class-validator";
-import { IMomentRequest } from "./entities";
+import { ETypeMoment } from "./entities";
 
 export class StatusRequestDTO {
   @IsOptional()
@@ -22,4 +24,21 @@ export class ScheduleRequestDTO {
   @IsNumber()
   @IsPositive()
   loopMinutes?: number;
+}
+
+class IMomentRequest {
+  @IsEnum(ETypeMoment)
+  type: ETypeMoment;
+
+  @IsOptional()
+  @IsDate()
+  datetime?: Date;
+
+  @IsOptional()
+  @IsNumber()
+  @IsPositive()
+  minutes?: number;
+
+  @IsBoolean()
+  status: boolean;
 }
