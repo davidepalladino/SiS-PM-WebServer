@@ -12,3 +12,9 @@ export class ScheduleResponseDTO {
   moments: IMomentResponse[];
   loopMinutes?: number;
 }
+
+export class DeviceDTO {
+  usbInformation: string;
+  deviceType: string;
+  serialNumber: string;
+}

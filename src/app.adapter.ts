@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import {
+  DeviceDTO,
   ScheduleResponseDTO,
   StatusResponseDTO
 } from "./entities/response.dto";
@@ -8,8 +9,8 @@ import { ScheduleRequestDTO } from "./entities/request.dto";
 
 @Injectable()
 export class AppAdapter {
-  adaptStatuses(response: string): StatusResponseDTO[] {
-    return response.match(/(on|off)/g).map(
+  adaptGetStatuses(statuses: string): StatusResponseDTO[] {
+    return statuses.match(/(on|off)/g).map(
       (result, index) =>
         ({
           socket: index + 1,
@@ -18,10 +19,10 @@ export class AppAdapter {
     );
   }
 
-  adaptGetStatus(response: string): StatusResponseDTO {
+  adaptGetStatus(status: string): StatusResponseDTO {
     return {
-      socket: Number(response.match(/(outlet \d)/g)[0].split(" ")[1]),
-      status: response.match(/(on|off)/g)[0] === "on"
+      socket: Number(status.match(/(outlet \d)/g)[0].split(" ")[1]),
+      status: status.match(/(on|off)/g)[0] === "on"
     } as StatusResponseDTO;
   }
 
@@ -33,9 +34,9 @@ export class AppAdapter {
     return "t";
   }
 
-  adaptGetSchedule(response: string): ScheduleResponseDTO {
-    const splitResponse = response.split("\n");
-    let [, , socket, modifiedAt, ...rest] = splitResponse;
+  adaptGetSchedule(schedule: string): ScheduleResponseDTO {
+    const scheduleSplit = schedule.split("\n");
+    let [, , socket, modifiedAt, ...rest] = scheduleSplit;
 
     const moments: IMomentResponse[] = [];
     let loopDays: number = undefined;
@@ -62,7 +63,7 @@ export class AppAdapter {
     } as ScheduleResponseDTO;
   }
 
-  adaptSetSchedule(schedule: ScheduleRequestDTO) {
+  adaptSetSchedule(schedule: ScheduleRequestDTO): string {
     let args = "";
 
     if (schedule.moments && schedule.moments.length) {
@@ -87,5 +88,15 @@ export class AppAdapter {
     }
 
     return args;
+  }
+
+  adaptGetDevice(device: string): DeviceDTO {
+    const deviceSplit = device.split("\n");
+    console.log(deviceSplit);
+    return {
+      usbInformation: "deviceSplit[0]",
+      deviceType: "deviceSplit[1]",
+      serialNumber: "deviceSplit[2]"
+    };
   }
 }
