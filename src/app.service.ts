@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { exec } from "child_process";
 import { promisify } from "util";
-import { map, Observable, of, tap } from "rxjs";
+import { map, Observable, tap } from "rxjs";
 import { fromPromise } from "rxjs/internal/observable/innerFrom";
 import { AppAdapter } from "./app.adapter";
 import {
@@ -10,6 +10,7 @@ import {
   StatusResponseDTO
 } from "./entities/response.dto";
 import { ScheduleRequestDTO } from "./entities/request.dto";
+import { IBash } from "./entities/entities";
 
 @Injectable()
 export class AppService {
@@ -61,21 +62,17 @@ export class AppService {
 
   getDevice(): Observable<DeviceDTO | string> {
     return this.executeCommand(`-s`).pipe(
-      tap(console.log),
       map((response: string) => {
         return this.appAdapter.adaptGetDevice(response);
-      }),
+      })
     );
   }
 
   private executeCommand(arg: string) {
-    const command = `sispmctl ${arg}`;
-
-    console.log(command);
-
     return fromPromise(
-      this.execute(command).then(({ stdout }) => {
-        return stdout;
+      this.execute(`sispmctl ${arg}`).then((bash: IBash) => {
+        console.log(bash);
+        return bash.stdout;
       })
     );
   }

@@ -3,7 +3,11 @@ export enum ETypeMoment {
   MINUTES = "MINUTES"
 }
 
-export interface IExecResult {
+export interface IBash {
+  code: number;
+  killed: false;
+  signal: any;
+  cmd: string;
   stdout: string;
   stderr: string;
 }
