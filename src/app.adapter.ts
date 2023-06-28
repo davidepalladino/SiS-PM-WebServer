@@ -55,6 +55,9 @@ export class AppAdapter {
           weeks: row.includes("week")
             ? Number(socket.match(/\d{1} (week)/)[0][0])
             : 0,
+          days: row.includes("day")
+            ? Number(socket.match(/\d{1} (day)/)[0][0])
+            : 0,
           hours: row.includes("h")
             ? Number(
                 row.match(/\d{1,2}(h)/)[0].substring(0, row.search("h") - 1)
