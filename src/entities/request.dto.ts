@@ -5,7 +5,9 @@ import {
   IsEnum,
   IsNumber,
   IsOptional,
-  IsPositive
+  IsPositive,
+  Max,
+  Min
 } from "class-validator";
 import { ETypeMoment } from "./entities";
 
@@ -23,6 +25,8 @@ export class ScheduleRequestDTO {
   @IsOptional()
   @IsNumber()
   @IsPositive()
+  @Min(30)
+  @Max(82056)
   loopMinutes?: number;
 }
 
