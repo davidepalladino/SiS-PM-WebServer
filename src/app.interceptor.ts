@@ -41,9 +41,19 @@ export class AppInterceptor implements NestInterceptor {
               return throwError(
                 () => new InternalServerErrorException("DEVICE_NOT_CONNECTED")
               );
+            } else if (bash.stderr.includes("Incorrect Date")) {
+              return throwError(
+                () => new BadRequestException("INCORRECT_DATE")
+              );
+            } else if (bash.stderr.includes("Invalid outlet number given")) {
+              return throwError(
+                () => new BadRequestException("INCORRECT_SOCKET_NUMBER")
+              );
             }
 
-            return throwError(() => new BadRequestException(bash.stderr));
+            return throwError(
+              () => new BadRequestException("GENERIC", bash.stderr)
+            );
         }
       })
     );
