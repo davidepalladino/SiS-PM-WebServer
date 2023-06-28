@@ -53,20 +53,16 @@ export class AppAdapter {
       } else if (row.includes("Loop")) {
         loop = {
           weeks: row.includes("week")
-            ? Number(socket.match(/\d{1} (week)/)[0][0])
+            ? Number(socket.match(/\d{1} (week)/)[0].match(/\d{1}/)[0])
             : 0,
           days: row.includes("day")
-            ? Number(socket.match(/\d{1} (day)/)[0][0])
+            ? Number(socket.match(/\d{1} (day)/)[0].match(/\d{1}/)[0])
             : 0,
           hours: row.includes("h")
-            ? Number(
-                row.match(/\d{1,2}(h)/)[0].substring(0, row.search("h") - 1)
-              )
+            ? Number(row.match(/\d{1,2}(h)/)[0].match(/\d{1,2}/)[0])
             : 0,
           minutes: row.includes("min")
-            ? Number(
-                row.match(/\d{1,2}(min)/)[0].substring(0, row.search("min") - 1)
-              )
+            ? Number(row.match(/\d{1,2}(min)/)[0].match(/\d{1,2}/)[0])
             : 0
         };
       }
