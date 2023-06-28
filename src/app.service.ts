@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { exec } from "child_process";
 import { promisify } from "util";
-import { map, Observable, tap } from "rxjs";
+import { map, Observable } from "rxjs";
 import { fromPromise } from "rxjs/internal/observable/innerFrom";
 import { AppAdapter } from "./app.adapter";
 import {
@@ -20,14 +20,12 @@ export class AppService {
 
   getStatuses(): Observable<StatusResponseDTO[]> {
     return this.executeCommand("-g all").pipe(
-      // tap(console.log),
       map((response: string) => this.appAdapter.adaptGetStatuses(response))
     );
   }
 
   getStatus(socketId: number): Observable<StatusResponseDTO> {
     return this.executeCommand(`-g${socketId}`).pipe(
-      tap(console.log),
       map((response: string) => this.appAdapter.adaptGetStatus(response))
     );
   }
@@ -35,15 +33,11 @@ export class AppService {
   setStatus(socketId: number, status?: boolean): Observable<StatusResponseDTO> {
     return this.executeCommand(
       `-${this.appAdapter.adaptSetStatus(status)}${socketId}`
-    ).pipe(
-      tap(console.log),
-      map((response: string) => this.appAdapter.adaptGetStatus(response))
-    );
+    ).pipe(map((response: string) => this.appAdapter.adaptGetStatus(response)));
   }
 
   getSchedule(socketId: number): Observable<ScheduleResponseDTO> {
     return this.executeCommand(`-a${socketId}`).pipe(
-      tap(console.log),
       map((response: string) => this.appAdapter.adaptGetSchedule(response))
     );
   }
@@ -55,7 +49,6 @@ export class AppService {
     return this.executeCommand(
       `-A${socketId} ${this.appAdapter.adaptSetSchedule(schedule)}`
     ).pipe(
-      tap(console.log),
       map((response: string) => this.appAdapter.adaptGetSchedule(response))
     );
   }

@@ -14,7 +14,10 @@ export class ScheduleResponseDTO {
 }
 
 export class DeviceDTO {
-  usbInformation: string;
+  usbInformation: {
+    bus: string;
+    device: string;
+  };
   deviceType: string;
   serialNumber: string;
 }

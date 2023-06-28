@@ -94,7 +94,10 @@ export class AppAdapter {
     const deviceSplit = device.split("\n");
     console.log(deviceSplit);
     return {
-      usbInformation: "deviceSplit[0]",
+      usbInformation: {
+        bus: deviceSplit[0].match(/(bus) \d/)[0].substring(4),
+        device: deviceSplit[0].match(/(device) \d/)[0].substring(8)
+      },
       deviceType: "deviceSplit[1]",
       serialNumber: "deviceSplit[2]"
     };
