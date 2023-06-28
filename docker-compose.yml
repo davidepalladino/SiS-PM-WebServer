@@ -4,8 +4,6 @@ services:
     container_name: sis-pm-webserver
     build: .
     devices:
-      - /dev/bus/usb/001/008
+      - /dev/bus/usb/001
     ports:
       - "3000:3000"
-    volumes:
-      - .:/usr/src/app
