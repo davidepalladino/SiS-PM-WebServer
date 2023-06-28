@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   CallHandler,
   ExecutionContext,
   Injectable,
@@ -42,9 +43,7 @@ export class AppInterceptor implements NestInterceptor {
               );
             }
 
-            return throwError(
-              () => new InternalServerErrorException("UNKNOWN", bash.stderr)
-            );
+            return throwError(() => new BadRequestException(bash.stderr));
         }
       })
     );
