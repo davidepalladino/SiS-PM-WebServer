@@ -6,13 +6,16 @@ import {
   NestInterceptor
 } from "@nestjs/common";
 import { catchError, Observable, throwError } from "rxjs";
+import { IBash } from "./entities/entities";
 
 @Injectable()
 export class AppInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<string> {
     return next.handle().pipe(
-      catchError((error: { code; stderr }) => {
-        switch (error.code) {
+      catchError((bash: IBash) => {
+        console.log(bash);
+
+        switch (bash.code) {
           case 2:
             return throwError(
               () =>
@@ -33,8 +36,18 @@ export class AppInterceptor implements NestInterceptor {
               () => new InternalServerErrorException("UNKNOWN")
             );
           default:
+            if (bash.stderr.includes("Check USB connections, please!")) {
+              return throwError(
+                () =>
+                  new InternalServerErrorException(
+                    "DEVICE_NOT_CONNECTED",
+                    bash.stderr
+                  )
+              );
+            }
+
             return throwError(
-              () => new InternalServerErrorException("UNKNOWN", error.stderr)
+              () => new InternalServerErrorException("UNKNOWN", bash.stderr)
             );
         }
       })
