@@ -5,6 +5,7 @@ import { map, Observable, tap } from "rxjs";
 import { fromPromise } from "rxjs/internal/observable/innerFrom";
 import { AppAdapter } from "./app.adapter";
 import {
+  DeviceDTO,
   ScheduleResponseDTO,
   StatusResponseDTO
 } from "./entities/response.dto";
@@ -21,7 +22,7 @@ export class AppService {
     return this.executeCommand("-g all").pipe(
       tap(console.log),
       map((response: IExecResult) =>
-        this.appAdapter.adaptStatuses(response.stdout)
+        this.appAdapter.adaptGetStatuses(response.stdout)
       )
     );
   }
@@ -66,6 +67,19 @@ export class AppService {
       map((response: IExecResult) =>
         this.appAdapter.adaptGetSchedule(response.stdout)
       )
+    );
+  }
+
+  getDevice(): Observable<DeviceDTO | string> {
+    return this.executeCommand(`-s`).pipe(
+      tap(console.log),
+      map((response: IExecResult) => {
+        if (response.stdout.includes("Check USB connections, please!")) {
+          return response.stdout;
+        }
+
+        return this.appAdapter.adaptGetDevice(response.stdout);
+      })
     );
   }
 

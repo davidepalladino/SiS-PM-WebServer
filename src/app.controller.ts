@@ -44,4 +44,9 @@ export class AppController {
   ) {
     return this.appService.setSchedule(socketId, body);
   }
+
+  @Get("/device")
+  getDevice() {
+    return this.appService.getDevice();
+  }
 }
