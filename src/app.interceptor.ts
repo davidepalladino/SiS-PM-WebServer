@@ -38,11 +38,7 @@ export class AppInterceptor implements NestInterceptor {
           default:
             if (bash.stderr.includes("Check USB connections, please!")) {
               return throwError(
-                () =>
-                  new InternalServerErrorException(
-                    "DEVICE_NOT_CONNECTED",
-                    bash.stderr
-                  )
+                () => new InternalServerErrorException("DEVICE_NOT_CONNECTED")
               );
             }
 
