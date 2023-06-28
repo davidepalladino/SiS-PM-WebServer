@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { exec } from "child_process";
 import { promisify } from "util";
-import { catchError, map, Observable, tap } from "rxjs";
+import { catchError, map, Observable, of, tap } from "rxjs";
 import { fromPromise } from "rxjs/internal/observable/innerFrom";
 import { AppAdapter } from "./app.adapter";
 import {
@@ -66,7 +66,7 @@ export class AppService {
         return this.appAdapter.adaptGetDevice(response);
       }),
       catchError((err: string) => {
-        return err;
+        return of(err);
       })
     );
   }
