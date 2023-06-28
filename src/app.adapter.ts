@@ -51,6 +51,7 @@ export class AppAdapter {
           status: row.substring(29, 31) === "on"
         });
       } else if (row.includes("Loop")) {
+        console.log(socket.match(/\d{1} (day)/)[0].match(/\d{1}/)[0])
         loop = {
           weeks: row.includes("week")
             ? Number(socket.match(/\d{1} (week)/)[0].match(/\d{1}/)[0])
