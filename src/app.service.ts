@@ -65,8 +65,8 @@ export class AppService {
       map((response: string) => {
         return this.appAdapter.adaptGetDevice(response);
       }),
-      catchError((err: string) => {
-        return of(err);
+      catchError((err: { stderr }) => {
+        return of(err.stderr);
       })
     );
   }
