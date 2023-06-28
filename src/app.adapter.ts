@@ -51,13 +51,12 @@ export class AppAdapter {
           status: row.substring(29, 31) === "on"
         });
       } else if (row.includes("Loop")) {
-        console.log(socket.match(/\d{1} (day)/)[0].match(/\d{1}/)[0])
         loop = {
           weeks: row.includes("week")
-            ? Number(socket.match(/\d{1} (week)/)[0].match(/\d{1}/)[0])
+            ? Number(row.match(/\d{1} (week)/)[0].match(/\d{1}/)[0])
             : 0,
           days: row.includes("day")
-            ? Number(socket.match(/\d{1} (day)/)[0].match(/\d{1}/)[0])
+            ? Number(row.match(/\d{1} (day)/)[0].match(/\d{1}/)[0])
             : 0,
           hours: row.includes("h")
             ? Number(row.match(/\d{1,2}(h)/)[0].match(/\d{1,2}/)[0])
