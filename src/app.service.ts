@@ -81,6 +81,7 @@ export class AppService {
         return this.appAdapter.adaptGetDevice(response.stdout);
       }),
       catchError((err: IExecResult) => {
+        console.log(err);
         return err.stderr;
       })
     );
