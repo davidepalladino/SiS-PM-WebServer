@@ -9,7 +9,6 @@ import {
   ScheduleResponseDTO,
   StatusResponseDTO
 } from "./entities/response.dto";
-import { IExecResult } from "./entities/entities";
 import { ScheduleRequestDTO } from "./entities/request.dto";
 
 @Injectable()
@@ -21,18 +20,14 @@ export class AppService {
   getStatuses(): Observable<StatusResponseDTO[]> {
     return this.executeCommand("-g all").pipe(
       tap(console.log),
-      map((response: IExecResult) =>
-        this.appAdapter.adaptGetStatuses(response.stdout)
-      )
+      map((response: string) => this.appAdapter.adaptGetStatuses(response))
     );
   }
 
   getStatus(socketId: number): Observable<StatusResponseDTO> {
     return this.executeCommand(`-g${socketId}`).pipe(
       tap(console.log),
-      map((response: IExecResult) =>
-        this.appAdapter.adaptGetStatus(response.stdout)
-      )
+      map((response: string) => this.appAdapter.adaptGetStatus(response))
     );
   }
 
@@ -41,18 +36,14 @@ export class AppService {
       `-${this.appAdapter.adaptSetStatus(status)}${socketId}`
     ).pipe(
       tap(console.log),
-      map((response: IExecResult) =>
-        this.appAdapter.adaptGetStatus(response.stdout)
-      )
+      map((response: string) => this.appAdapter.adaptGetStatus(response))
     );
   }
 
   getSchedule(socketId: number): Observable<ScheduleResponseDTO> {
     return this.executeCommand(`-a${socketId}`).pipe(
       tap(console.log),
-      map((response: IExecResult) =>
-        this.appAdapter.adaptGetSchedule(response.stdout)
-      )
+      map((response: string) => this.appAdapter.adaptGetSchedule(response))
     );
   }
 
@@ -64,25 +55,18 @@ export class AppService {
       `-A${socketId} ${this.appAdapter.adaptSetSchedule(schedule)}`
     ).pipe(
       tap(console.log),
-      map((response: IExecResult) =>
-        this.appAdapter.adaptGetSchedule(response.stdout)
-      )
+      map((response: string) => this.appAdapter.adaptGetSchedule(response))
     );
   }
 
   getDevice(): Observable<DeviceDTO | string> {
     return this.executeCommand(`-s`).pipe(
       tap(console.log),
-      map((response: IExecResult) => {
-        if (response.stdout.includes("Check USB connections, please!")) {
-          return response.stdout;
-        }
-
-        return this.appAdapter.adaptGetDevice(response.stdout);
+      map((response: string) => {
+        return this.appAdapter.adaptGetDevice(response);
       }),
-      catchError((err: IExecResult) => {
-        console.log(err);
-        return err.stderr;
+      catchError((err: string) => {
+        return err;
       })
     );
   }
@@ -93,8 +77,8 @@ export class AppService {
     console.log(command);
 
     return fromPromise(
-      this.execute(command).then(({ stdout, stderr }) => {
-        return { stdout, stderr } as IExecResult;
+      this.execute(command).then(({ stdout }) => {
+        return stdout;
       })
     );
   }
