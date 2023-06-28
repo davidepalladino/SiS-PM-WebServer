@@ -4,7 +4,7 @@ import {
   ScheduleResponseDTO,
   StatusResponseDTO
 } from "./entities/response.dto";
-import { ETypeMoment, IMomentResponse } from "./entities/entities";
+import { ETypeMoment, ILoop, IMomentResponse } from "./entities/entities";
 import { ScheduleRequestDTO } from "./entities/request.dto";
 
 @Injectable()
@@ -39,7 +39,7 @@ export class AppAdapter {
     let [, , socket, modifiedAt, ...rest] = scheduleSplit;
 
     const moments: IMomentResponse[] = [];
-    let loopDays: number = undefined;
+    let loop: ILoop = undefined;
 
     socket = socket.match(/\d/)[0];
     modifiedAt = modifiedAt.substring(18) + "+00:00";
@@ -51,7 +51,21 @@ export class AppAdapter {
           status: row.substring(29, 31) === "on"
         });
       } else if (row.includes("Loop")) {
-        loopDays = Number(row.substring(13, 14));
+        loop = {
+          weeks: row.includes("week")
+            ? Number(socket.match(/\d{1} (week)/)[0][0])
+            : 0,
+          hours: row.includes("h")
+            ? Number(
+                row.match(/\d{1,2}(h)/)[0].substring(0, row.search("h") - 1)
+              )
+            : 0,
+          minutes: row.includes("min")
+            ? Number(
+                row.match(/\d{1,2}(min)/)[0].substring(0, row.search("min") - 1)
+              )
+            : 0
+        };
       }
     });
 
@@ -59,7 +73,7 @@ export class AppAdapter {
       socket: Number(socket),
       modifiedAt: new Date(modifiedAt),
       moments,
-      loopMinutes: loopDays
+      loop
     } as ScheduleResponseDTO;
   }
 

@@ -16,3 +16,9 @@ export interface IMomentResponse {
   datetime: Date;
   status: boolean;
 }
+
+export interface ILoop {
+  weeks: number;
+  hours: number;
+  minutes: number;
+}

@@ -1,4 +1,4 @@
-import { IMomentResponse } from "./entities";
+import { ILoop, IMomentResponse } from "./entities";
 
 export class StatusResponseDTO {
   socket: number;
@@ -10,7 +10,7 @@ export class ScheduleResponseDTO {
   socket: number;
   modifiedAt: Date;
   moments: IMomentResponse[];
-  loopMinutes?: number;
+  loop?: ILoop;
 }
 
 export class DeviceDTO {
