@@ -99,8 +99,8 @@ export class AppAdapter {
         bus: deviceSplit[1].match(/(bus) \d{0,3}/g)[0].substring(4),
         device: deviceSplit[1].match(/(device) \d{0,3}/g)[0].substring(7)
       },
-      deviceType: deviceSplit[2].substring(13),
-      serialNumber: deviceSplit[3].substring(15)
+      deviceType: deviceSplit[2].substring(18),
+      serialNumber: deviceSplit[3].substring(18)
     };
   }
 }
