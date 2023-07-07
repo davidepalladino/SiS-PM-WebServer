@@ -1,4 +1,4 @@
-FROM node:latest-alpine
+FROM node:20-alpine
 
 ARG PORT=3000
 
