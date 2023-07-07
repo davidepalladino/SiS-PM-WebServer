@@ -2,8 +2,8 @@ FROM node:20-alpine
 
 ARG PORT=3000
 
-RUN apt-get update
-RUN apt-get -y install sispmctl
+RUN apk update
+RUN apk add --no-interactive sispmctl
 RUN chmod u+s /usr/bin/sispmctl
 
 WORKDIR /app
