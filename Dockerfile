@@ -2,6 +2,8 @@ FROM node:20-bullseye-slim
 
 ARG PORT=3000
 
+ENV NODE_ENV production
+
 RUN apt-get update
 RUN apt-get -y install sispmctl
 RUN chmod u+s /usr/bin/sispmctl
@@ -12,6 +14,8 @@ RUN npm install
 COPY . .
 RUN echo "PORT=$PORT" > .env
 
-CMD ["npm", "start"]
+RUN npm run build
+
+CMD [ "node", "dist/main.js" ]
 
 EXPOSE $PORT
