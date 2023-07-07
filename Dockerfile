@@ -12,6 +12,6 @@ RUN npm install
 COPY . .
 RUN echo "PORT=$PORT" > .env
 
-CMD ["npm", "start"]
+CMD ["npm", "start:prod"]
 
 EXPOSE $PORT
