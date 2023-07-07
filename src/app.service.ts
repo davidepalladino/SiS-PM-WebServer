@@ -5,7 +5,7 @@ import { map, Observable } from "rxjs";
 import { fromPromise } from "rxjs/internal/observable/innerFrom";
 import { AppAdapter } from "./app.adapter";
 import {
-  DeviceDTO,
+  DeviceResponseDTO,
   ScheduleResponseDTO,
   StatusResponseDTO
 } from "./entities/response.dto";
@@ -53,7 +53,7 @@ export class AppService {
     );
   }
 
-  getDevice(): Observable<DeviceDTO | string> {
+  getDevice(): Observable<DeviceResponseDTO | string> {
     return this.executeCommand(`-s`).pipe(
       map((response: string) => {
         return this.appAdapter.adaptGetDevice(response);

@@ -1,10 +1,12 @@
 import { Injectable } from "@nestjs/common";
 import {
-  DeviceDTO,
+  DeviceResponseDTO,
+  LoopResponseDTO,
+  MomentResponseDTO,
   ScheduleResponseDTO,
   StatusResponseDTO
 } from "./entities/response.dto";
-import { ETypeMoment, ILoop, IMomentResponse } from "./entities/entities";
+import { ETypeMoment } from "./entities/entities";
 import { ScheduleRequestDTO } from "./entities/request.dto";
 
 @Injectable()
@@ -36,10 +38,11 @@ export class AppAdapter {
 
   adaptGetSchedule(schedule: string): ScheduleResponseDTO {
     const scheduleSplit = schedule.split("\n");
+    // eslint-disable-next-line prefer-const
     let [, , socket, modifiedAt, ...rest] = scheduleSplit;
 
-    const moments: IMomentResponse[] = [];
-    let loop: ILoop = undefined;
+    const moments: MomentResponseDTO[] = [];
+    let loop: LoopResponseDTO = undefined;
 
     socket = socket.match(/\d/)[0];
     modifiedAt = modifiedAt.substring(18) + "+00:00";
@@ -103,7 +106,7 @@ export class AppAdapter {
     return args;
   }
 
-  adaptGetDevice(device: string): DeviceDTO {
+  adaptGetDevice(device: string): DeviceResponseDTO {
     const deviceSplit = device.split("\n");
     console.log(deviceSplit);
     console.log(deviceSplit[1].match(/(bus) \d/g)[0]);

@@ -11,15 +11,3 @@ export interface IBash {
   stdout: string;
   stderr: string;
 }
-
-export interface IMomentResponse {
-  datetime: Date;
-  status: boolean;
-}
-
-export interface ILoop {
-  weeks: number;
-  days: number;
-  hours: number;
-  minutes: number;
-}
