@@ -4,8 +4,8 @@ services:
     container_name: sis-pm-webserver
     build:
       context: .
-      args:
-        - PORT=3000
+#      args:
+#        - PORT=3000
     devices:
       - /dev/bus/usb/001
     ports:
