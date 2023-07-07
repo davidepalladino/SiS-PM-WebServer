@@ -10,7 +10,7 @@ RUN chmod u+s /usr/bin/sispmctl
 
 WORKDIR /app
 COPY package.json .
-RUN npm ci
+RUN npm install
 COPY . .
 RUN echo "PORT=$PORT" > .env
 
