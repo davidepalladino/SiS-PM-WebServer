@@ -2,7 +2,7 @@ version: "3.5"
 services:
   app:
     container_name: sis-pm-webserver
-    image: sis-pm-webserver:latest-prod
+    image: sis-pm-webserver:latest-dev
     build:
       context: .
 #      args:
