@@ -1,4 +1,4 @@
-FROM node:20-bullseye-slim
+FROM node:latest
 
 ARG PORT=3000
 
@@ -12,8 +12,6 @@ RUN npm install
 COPY . .
 RUN echo "PORT=$PORT" > .env
 
-RUN npm run build
-
-CMD [ "node", "dist/main.js" ]
+CMD ["npm", "start"]
 
 EXPOSE $PORT
