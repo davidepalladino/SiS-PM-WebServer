@@ -1,7 +1,7 @@
+FROM node:20-bullseye-slim
+
 LABEL version="1.0.0"
 LABEL description="This WebServer application provides an useful way to manage a USB controlled powerstrips produced by GEMBIRD LTD."
-
-FROM node:20-bullseye-slim
 
 ARG PORT=3000
 
