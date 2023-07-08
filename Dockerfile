@@ -1,6 +1,6 @@
 FROM node:20-bullseye-slim
 
-LABEL version="1.0.0-dev"
+LABEL version="1.0.0"
 LABEL description="This WebServer application provides an useful way to manage a USB controlled powerstrips produced by GEMBIRD LTD."
 
 ARG PORT=3000
@@ -15,6 +15,8 @@ RUN npm install
 COPY . .
 RUN echo "PORT=$PORT" > .env
 
-CMD ["npm", "start"]
+#RUN npm run build
+#CMD [ "node", "dist/main.js" ]
+CMD ["npm", "start:prod"]
 
 EXPOSE $PORT
