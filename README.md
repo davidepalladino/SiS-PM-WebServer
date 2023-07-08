@@ -1,5 +1,5 @@
 # SiS-PM WebServer
-This WebServer application provides a useful way to manage an USB controlled power strips, produced by GEMBIRD LTD, by HTTP API.
+This WebServer application provides a useful way to manage a USB controlled power strips, produced by GEMBIRD LTD, by HTTP API.
 Is a little component that you can easily integrate wherever you want. In example, with an Angular or Android application.
 In summary, you can:
 * **get/set** the status for single socket;
