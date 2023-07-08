@@ -15,8 +15,7 @@ RUN npm install
 COPY . .
 RUN echo "PORT=$PORT" > .env
 
-#RUN npm run build
-#CMD [ "node", "dist/main.js" ]
-CMD ["npm", "start:prod"]
+RUN npm run build
+CMD [ "node", "dist/main.js" ]
 
 EXPOSE $PORT
