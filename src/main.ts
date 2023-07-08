@@ -11,7 +11,7 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle("SiS-PM WebServer")
     .setDescription(
-      "This WebServer application provides an useful way to manage a USB controlled powerstrips produced by GEMBIRD LTD."
+      "This WebServer application provides a useful way to manage a USB controlled power strips produced by GEMBIRD LTD."
     )
     .setVersion("1.0.0")
     .build();
