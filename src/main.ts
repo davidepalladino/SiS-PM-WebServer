@@ -13,7 +13,7 @@ async function bootstrap() {
     .setDescription(
       "This WebServer application provides a useful way to manage a USB controlled power strips produced by GEMBIRD LTD."
     )
-    .setVersion("1.0.0")
+    .setVersion("1.0.1")
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup("api/docs", app, document);
