@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { exec } from "child_process";
 import { promisify } from "util";
-import { map, Observable } from "rxjs";
+import { map, Observable, tap } from "rxjs";
 import { fromPromise } from "rxjs/internal/observable/innerFrom";
 import { AppAdapter } from "./app.adapter";
 import {
@@ -14,8 +14,6 @@ import { IBash } from "./entities/entities";
 
 @Injectable()
 export class AppService {
-  private execute = promisify(exec);
-
   constructor(private readonly appAdapter: AppAdapter) {}
 
   getStatuses(): Observable<StatusResponseDTO[]> {
@@ -62,11 +60,9 @@ export class AppService {
   }
 
   private executeCommand(arg: string) {
-    return fromPromise(
-      this.execute(`sispmctl ${arg}`).then((bash: IBash) => {
-        console.log(bash);
-        return bash.stdout;
-      })
+    return fromPromise(promisify(exec)(`sispmctl ${arg}`)).pipe(
+      tap(console.log),
+      map((bash: IBash) => bash.stdout)
     );
   }
 }
